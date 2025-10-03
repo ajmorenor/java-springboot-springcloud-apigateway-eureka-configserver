@@ -1,35 +1,27 @@
 package com.example.poc.pedidos.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.poc.pedidos.model.Pedido;
+import com.example.poc.pedidos.service.PedidoService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
+    private final PedidoService pedidoService;
+
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
 
     @GetMapping
     public List<Pedido> listarPedidos() {
-        return List.of(
-                new Pedido(1, 1, 2),
-                new Pedido(2, 2, 1)
-        );
+        return pedidoService.listarPedidos();
     }
-}
 
-class Pedido {
-    private int id;
-    private int idUsuario;
-    private int idProducto;
-
-    public Pedido(int id, int idUsuario, int idProducto) {
-        this.id = id;
-        this.idUsuario = idUsuario;
-        this.idProducto = idProducto;
+    @PostMapping
+    public Pedido crearPedido(@RequestBody Pedido pedido) {
+        return pedidoService.crearPedido(pedido);
     }
-    public int getId() { return id; }
-    public int getIdUsuario() { return idUsuario; }
-    public int getIdProducto() { return idProducto; }
 }

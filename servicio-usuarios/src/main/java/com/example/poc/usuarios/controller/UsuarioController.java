@@ -1,36 +1,27 @@
 package com.example.poc.usuarios.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.poc.usuarios.model.Usuario;
+import com.example.poc.usuarios.service.UsuarioService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// Marca la clase como controlador REST
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
+    private final UsuarioService usuarioService;
 
-    // Endpoint GET /usuarios
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
     @GetMapping
     public List<Usuario> listarUsuarios() {
-        // Devuelve lista de usuarios de ejemplo
-        return List.of(
-                new Usuario(1, "Ana"),
-                new Usuario(2, "Luis")
-        );
+        return usuarioService.listarUsuarios();
     }
-}
 
-// Clase Usuario de ejemplo
-class Usuario {
-    private int id;
-    private String nombre;
-
-    public Usuario(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    @PostMapping
+    public Usuario crearUsuario(@RequestBody Usuario usuario) {
+        return usuarioService.crearUsuario(usuario);
     }
-    public int getId() { return id; }
-    public String getNombre() { return nombre; }
 }
